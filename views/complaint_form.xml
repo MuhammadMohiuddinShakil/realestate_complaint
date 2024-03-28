@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--search view of complaint model-->
+    <record id="view_complaint_search" model="ir.ui.view">
+        <field name="name">Complaint Search View</field>
+        <field name="model">realestate.complaint</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="email"/>
+                <field name="complaint_reference"/>
+                <separator/>
+                <filter string="New" name="filter_new" domain="[('state', '=', 'new')]"/>
+                <filter string="In Review" name="filter_in_review" domain="[('state', '=', 'in_review')]"/>
+                <filter string="In Progress" name="filter_in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Solved" name="filter_solved" domain="[('state', '=', 'solved')]"/>
+                <filter string="Dropped" name="filter_dropped" domain="[('state', '=', 'dropped')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Customer Service Representative" name="group_customer_service_representative"
+                            context="{'group_by': 'customer_service_representative'}"/>
+                    <filter string="Complaint Type" name="group_complaint_type"
+                            context="{'group_by': 'complaint_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!--form view of complaint model-->
+    <record id="view_complaint_form" model="ir.ui.view">
+        <field name="name">Complaint Form View</field>
+        <field name="model">realestate.complaint</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_classify" string="Classify" class="btn-primary" states="new"
+                            confirm="Are you sure you want to classify this complaint?"
+                            type="object"/>
+                    <button name="action_close" string="Close" class="btn-primary" states="new,in_progress"
+                            confirm="Are you sure you want to close this complaint?"
+                            type="object"/>
+                    <button name="action_drop" string="Drop" class="btn-primary" states="new,in_progress,in_review"
+                            confirm="Are you sure you want to drop this complaint?"
+                            type="object"/>
+                    <button name="supervisor_confirm" string="Confirm" class="btn-primary"
+                            states="in_review"
+                            confirm="Are you sure you want to confirm and send it to in_progress state?" type="object"/>
+                    <button name="print_complaint_report" string="Print Complaint Report" class="btn-primary"
+                            states="in_review"
+                            confirm="Are you sure you want to print and send it to in_progress state?" type="object"/>
+                    <field name="state" widget="statusbar" nolabel="1"
+                           statusbar_visible="new,in_review,in_progress,solved,dropped"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="complaint_reference" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="name" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                        <field name="email" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                        <field name="flat_address" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                        <field name="complaint_type" attrs="{'readonly': [('state', '!=', 'new')]}"/>
+                        <field name="description"
+                               attrs="{'readonly': [('state', '!=', 'new')], 'required': [('complaint_type', '=', 'question')]}"/>
+                    </group>
+                    <group>
+                        <field name="action_plan" attrs="{'readonly': [('state', 'in', ['solved', 'dropped'])]}"/>
+                        <field name="complaint_validity_check"
+                               attrs="{'readonly': [('state', 'in', ['solved', 'dropped'])]}"/>
+                        <field name="complaint_validity_other_answer"
+                               attrs="{'readonly': [('state', '=', 'dropped')], 'invisible': [('complaint_validity_check', '!=', 'other')]}"/>
+                        <field name="customer_service_representative"
+                               attrs="{'readonly': [('state', 'in', ['solved', 'dropped'])]}"/>
+                    </group>
+                </sheet>
+                <!--this code is for chatter-->
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+
+            </form>
+        </field>
+    </record>
+
+    <!--tree/list view of complaint model-->
+    <record id="view_complaint_tree" model="ir.ui.view">
+        <field name="name">Complaint Tree View</field>
+        <field name="model">realestate.complaint</field>
+        <field name="arch" type="xml">
+            <tree decoration-info="state == 'new'" decoration-muted="state == 'in_review'"
+                  decoration-success="state == 'solved'" decoration-danger="state == 'dropped'">
+                <field name="complaint_reference" readonly="1"/>
+                <field name="name"/>
+                <field name="email"/>
+                <field name="flat_address"/>
+                <field name="complaint_type"/>
+                <field name="description"/>
+                <field name="action_plan"/>
+                <field name="state"/>
+                <field name="customer_service_representative"/>
+            </tree>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="complaint_solved_email_template" model="mail.template">
+            <field name="name">Complaint Closed Template</field>
+            <field name="model_id" ref="realestate_complaint.model_realestate_complaint"/>
+            <field name="subject">Complaint Closed Details</field>
+            <field name="email_from">{{ object.email }}</field>
+            <!--<field name="email_from">example@gmail.com</field>  Set your static email here -->
+            <field name="email_to">{{ object.email }}</field>
+            <field name="body_html" type="html">
+
+
+                <table border="0" cellpadding="0" cellspacing="0"
+                       style="padding-top: 16px; background-color: #FFFFFF; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                    <tr>
+                        <td align="center">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590"
+                                   style="padding: 16px; background-color: #FFFFFF; color: #454748; border-collapse:separate;">
+                                <tbody>
+
+                                    <!-- HEADER -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590"
+                                                   style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td valign="middle">
+                                                        <br/>
+                                                        <span style="font-size: 20px; font-weight: bold;">
+                                                            <t t-out="object.complaint_reference"></t>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="text-align:center;">
+                                                        <hr width="100%"
+                                                            style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <!-- CONTENT -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590"
+                                                   style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td valign="top" style="font-size: 13px;">
+                                                        <div>
+                                                            Dear
+                                                            <t t-out="object.name"></t>
+                                                            <br/>
+                                                            <br/>
+                                                            <t t-if="object.complaint_type == 'question'">
+                                                                Answer of your question:
+                                                                <br/>
+                                                                <t t-out="object.description"></t>
+                                                            </t>
+                                                            <t t-elif="object.complaint_type == 'electrical_issue'">
+                                                                Your complaint about electrical issue has been solved.
+                                                            </t>
+                                                            <t t-elif="object.complaint_type == 'heating_issue'">
+                                                                Your complaint about heating issue has been solved.
+                                                            </t>
+                                                            <t t-else="">Default</t>
+                                                            <br/>
+                                                            <br/>
+                                                            Your reference number:
+                                                            <t t-out="object.complaint_reference"></t>
+                                                            <br/>
+                                                            <br/>
+                                                            <br/>
+
+                                                            Thanks,
+                                                            <br/>
+                                                            RealEstateX
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:center;">
+                                                        <hr width="100%"
+                                                            style="background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                    <!-- FOOTER -->
+                                    <tr>
+                                        <td align="center" style="min-width: 590px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="590"
+                                                   style="min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                                                <tr>
+                                                    <td valign="middle" align="left">
+                                                        <t>RealEstateX systems GmbH And Co. KG</t>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="middle" align="left" style="opacity: 0.7;">
+                                                        <t>+49 0391/5630690</t>
+                                                        <t>sales@realestatex.de</t>
+                                                        <t>https://www.realestatex.de/</t>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

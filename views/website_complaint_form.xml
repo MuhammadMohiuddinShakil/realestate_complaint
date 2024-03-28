@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_complaint_form_web" model="website.menu">
+        <field name="name">Complaint Form</field>
+        <field name="url">/complaint_form</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">55</field>
+    </record>
+
+    <!--form view of complaint model for public user-->
+    <template id="complaint_form" name="Create Complaint">
+        <t t-call="website.layout">
+            <div class="container">
+                <form role="form" action="/submit_complaint" method="POST">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                    <div class="form-group" style="display: none;">
+                        <label class="control-label">Complaint Reference</label>
+                        <input type="text" readonly="readonly" class="form-control" value="{{ complaint_reference }}"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label" style="margin-top: 10px;">Name</label>
+                        <input type="text" name="name" class="form-control" t-att-value="name" required="1"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label" style="margin-top: 10px;">Email</label>
+                        <input type="email" name="email" class="form-control" t-att-value="email" required="1"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label" style="margin-top: 10px;">Flat Address</label>
+                        <input type="text" name="flat_address" class="form-control" t-att-value="flat_address"
+                               required="1"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label" style="margin-top: 10px;">Complaint Type</label>
+                        <select name="complaint_type" class="form-control" required="1">
+                            <option value="question">Question</option>
+                            <option value="electrical_issue">Electrical Issue</option>
+                            <option value="heating_issue">Heating Issue</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label" style="margin-top: 10px;">Description</label>
+                        <textarea name="description" class="form-control" t-att-value="description"></textarea>
+                    </div>
+
+                    <div class="clearfix oe_login_buttons">
+                        <button type="submit" class="btn btn-primary pull-left"
+                                style="margin-top: 20px; margin-bottom: 20px;">Create Complaint
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <!--website page for public user confirmation after submit form-->
+    <record id="user_thanks" model="website.page">
+        <field name="name">Thanks</field>
+        <field name="type">qweb</field>
+        <field name="url">/user-thank-you</field>
+        <field name="website_published">True</field>
+        <field name="key">realestate_complaint.user_thanks</field>
+        <field name="arch" type="xml">
+            <t name="Thanks" t-name="realestate_complaint.user_thanks">
+                <t t-call="website.layout">
+                    <div class="container"
+                         style="padding-top: 100px; padding-bottom: 100px;"> <!-- Added padding-top and padding-bottom -->
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <div class="alert alert-success" role="status">
+                                    <strong>Thanks!</strong>
+                                    The Complaint has been created successfully.
+                                </div>
+                                <p>Your complaint has been recorded with complaint number:
+                                    <strong>
+                                        <t t-esc="complaint_number"/>
+                                    </strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </field>
+    </record>
+</odoo>

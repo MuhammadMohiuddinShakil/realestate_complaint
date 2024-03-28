@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_complaint_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <link rel="stylesheet" type="text/css"
+                              href="/realestate_complaint/static/src/css/report_style.css"/>
+                        <div class="oe_structure"/>
+                        <!-- Complaint Details -->
+                        <div class="complaint-details">
+                            <h3>Complaint Details:</h3>
+                            <table class="complaint-table">
+                                <tr class="header-row">
+                                    <td class="label">Name:</td>
+                                    <td class="value">
+                                        <t t-esc="o.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Email:</td>
+                                    <td class="value">
+                                        <t t-esc="o.email"/>
+                                    </td>
+                                </tr>
+                                <tr class="header-row">
+                                    <td class="label">Flat Address:</td>
+                                    <td class="value">
+                                        <t t-esc="o.flat_address"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Complaint Type:</td>
+                                    <td class="value">
+                                        <t t-esc="o.complaint_type"/>
+                                    </td>
+                                </tr>
+                                <tr class="header-row">
+                                    <td class="label">Description:</td>
+                                    <td class="value">
+                                        <t t-esc="o.description"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Action Plan:</td>
+                                    <td class="value">
+                                        <t t-esc="o.action_plan"/>
+                                    </td>
+                                </tr>
+                                <tr class="header-row">
+                                    <td class="label">Customer Service Representative:</td>
+                                    <td class="value">
+                                        <t t-esc="o.customer_service_representative.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Complaint Number:</td>
+                                    <td class="value">
+                                        <t t-esc="o.complaint_reference"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <record id="report_complaint" model="ir.actions.report">
+        <field name="name">Complaint Report</field>
+        <field name="model">realestate.complaint</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">realestate_complaint.report_complaint_document</field>
+        <field name="report_file">realestate_complaint.report_complaint_document</field>
+        <field name="binding_model_id" ref="model_realestate_complaint"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

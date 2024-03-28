@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Define Action -->
+        <record id="action_complaint_form" model="ir.actions.act_window">
+            <field name="name">Complaint Form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">realestate.complaint</field>
+            <field name="view_mode">tree,form</field>
+            <!-- Add this line to restrict access to the user group
+            <field name="groups_id" eval="[(4, ref('your_module.group_public_users'))]"/>-->
+        </record>
+        <!-- Define Menu -->
+        <menuitem id="menu_realestate_complaint"
+                  name="Complaints"
+                  sequence="10"
+        />
+        <menuitem id="menu_realestate_complaint_submit"
+                  name="Submitted Complaint"
+                  parent="menu_realestate_complaint"
+                  action="action_complaint_form"
+        />
+
+    </data>
+</odoo>
